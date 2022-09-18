@@ -1,0 +1,29 @@
+{
+  "name": "twilio-functions",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "tsc --noEmit",
+    "start": "nodemon",
+    "deploy": "twilio-run deploy --functions-folder dist/functions --assets-folder dist/assets",
+    "build": "tsc && npm run build:copy-assets",
+    "build:copy-assets": "copyfiles src/assets/* src/assets/**/* --up 2 --exclude **/*.ts dist/assets/",
+    "prestart": "npm run build",
+    "predeploy": "npm run build"
+  },
+  "dependencies": {
+    "@twilio-labs/serverless-runtime-types": "^1.1",
+    "@twilio/runtime-handler": "1.2.4",
+    "deepl-node": "^1.6.0",
+    "nodemon": "^2.0.20",
+    "twilio": "^3.56"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.2.0",
+    "twilio-run": "^3.4.4",
+    "typescript": "^3.8"
+  },
+  "engines": {
+    "node": "14"
+  }
+}
