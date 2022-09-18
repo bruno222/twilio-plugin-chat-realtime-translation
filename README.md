@@ -15,7 +15,7 @@
 
 - It is the service this Plugin is using for Translations.
 
-- Max. translated characters/month: 500,000 characters
+- Max. translated characters/month for free: 500,000 characters
 
 - [Sign up here](https://www.deepl.com/pro-checkout/details?productId=1200&yearly=false&trial=false)
 
