@@ -32,19 +32,6 @@ export default class ChatTranslationPlugin extends FlexPlugin {
         return;
       }
 
-      // const {
-      //   conversation: {
-      //     source: {
-      //       attributes: { customerPublicKey },
-      //     },
-      //   },
-      // } = payload;
-
-      // if (!customerPublicKey) {
-      //   console.log('@@@ Not an E2E encrypted chat, aborting...');
-      //   return;
-      // }
-
       const translateTo = getLang(conversationSid);
 
       // no translation is needed
