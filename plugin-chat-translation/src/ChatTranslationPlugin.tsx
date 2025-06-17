@@ -2,8 +2,8 @@ import React from 'react';
 import * as Flex from '@twilio/flex-ui';
 import { FlexPlugin } from '@twilio/flex-plugin';
 import { TranslationBubble } from './components/TranslationBubble/TranslationBubble';
-import { apiDeeplTranslate } from './helpers/api-deepl-translate';
-import { getLang } from './helpers/chat-translation-session';
+import { apiTranslate } from './helpers/api-translate';
+import {addOriginalToCache} from "./helpers/chat-translation-session";
 
 const PLUGIN_NAME = 'ChatTranslationPlugin';
 
@@ -32,15 +32,38 @@ export default class ChatTranslationPlugin extends FlexPlugin {
         return;
       }
 
-      const translateTo = getLang(conversationSid);
+      // Find task by conversationSid
+      const taskMap = Flex.Manager.getInstance().store.getState().flex.worker.tasks;
+      console.log('@@@ tasks: ', taskMap);
 
-      // no translation is needed
-      if (translateTo === 'en-US') {
+      const matchingTask = Array.from(taskMap.values()).find(
+          (task: any) => task?.attributes?.conversationSid === conversationSid
+      );
+
+      console.log('@@@ matching task: ', matchingTask);
+
+      // No matching task
+      if (!matchingTask) {
+        console.log('@@@ matching task is null');
         return;
       }
 
-      const { text } = await apiDeeplTranslate(payload.body, translateTo);
+      // Find customer and agent languages
+      const customerLanguage = matchingTask?.attributes?.language ?? process.env.FLEX_APP_DEFAULT_CUSTOMER_LANGUAGE;
+      const agentLanguage = Flex.Manager.getInstance().store.getState().flex.worker.attributes?.language ?? process.env.FLEX_APP_DEFAULT_CUSTOMER_LANGUAGE
+
+      // No translation needed
+      if (customerLanguage === agentLanguage) {
+        console.log('@@@ customer and agent languages are the same', customerLanguage, agentLanguage);
+        return;
+      }
+
+      const { text } = await apiTranslate(payload.body, customerLanguage);
+
+      addOriginalToCache(text, payload.body)
+
       payload.body = text;
     });
+
   }
 }

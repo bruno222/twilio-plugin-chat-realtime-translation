@@ -1,0 +1,9 @@
+POST http://localhost:3000/translate
+Content-Type: application/json
+
+{
+  "text": "Hallo! Wie geht's?",
+  "to": "it-IT"
+}
+
+###

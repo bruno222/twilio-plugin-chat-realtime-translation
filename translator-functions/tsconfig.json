@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2018",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
@@ -8,6 +8,11 @@
     "outDir": "dist",
     "skipLibCheck": true,
     "sourceMap": true,
-    "types": ["node"],
-  }
+    "types": [
+      "node"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }
